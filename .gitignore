@@ -1,0 +1,9 @@
+.Makefile.swp
+dist
+__pycache__
+*.pyc
+*.egg-info
+.venv/
+.coverage
+*.xml
+*~
