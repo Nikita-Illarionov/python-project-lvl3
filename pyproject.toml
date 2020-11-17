@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "hexlet_code"
+name = "Nikita-Illarionov-hexlet-code"
 version = "0.1.0"
 description = ""
 authors = ["Nikita <Nikita.Clark@yandex.ru>"]
@@ -10,6 +10,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.6"
 requests = "^2.25.0"
+bs4 = "^0.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"

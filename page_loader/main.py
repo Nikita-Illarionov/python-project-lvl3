@@ -5,8 +5,9 @@ import requests
 
 def load_page(address, path):
     path_to_file = make_path(address, path)
-    request_body = make_request(address, path)
+    request_body = make_request(address)
     save_file(path_to_file, request_body)
+    return path_to_file, request_body
 
 
 def make_path(address, path):
@@ -15,9 +16,8 @@ def make_path(address, path):
     return os.path.join(path, '-'.join(address_parts) + '.html')
 
 
-def make_request(address, path):
-    request_get = requests.get(address)
-    return request_get.text
+def make_request(address):
+    return requests.get(address).text
 
 
 def save_file(path_to_file, text):
