@@ -2,6 +2,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import re
+import logging
 
 
 def load_resources(url, file_path):
@@ -11,7 +12,10 @@ def load_resources(url, file_path):
     dir_path, _ = os.path.splitext(file_path)
     dir_path += '_files'
 
-    os.mkdir(dir_path)
+    if os.path.isdir(dir_path):
+        logging.warning(f'{dir_path} already exists. Content can be changed')
+    else:
+        os.mkdir(dir_path)
 
     _, dir_name = os.path.split(dir_path)
     resources = {

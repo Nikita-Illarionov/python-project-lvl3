@@ -1,6 +1,7 @@
 import re
 import os
 import requests
+import logging
 
 
 def download(url, output_path):
@@ -17,5 +18,7 @@ def make_path(url, output_path):
 
 
 def save(content, path_to_file):
+    if os.path.isfile(path_to_file):
+        logging.warning(f'{path_to_file} already exists. It can be changed')
     with open(path_to_file, 'w') as file:
         file.write(content)
