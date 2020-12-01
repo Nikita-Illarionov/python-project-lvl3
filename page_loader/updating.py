@@ -20,12 +20,7 @@ def load_resources(url, file_path):
 
     _, dir_name = os.path.split(dir_path)
 
-    elements = []
-    for element in (soup.find_all(['img', 'link', 'script'])):
-        attribute = 'href' if element.name == 'link' else 'src'
-        link = element.get(attribute)
-        if link and link[0] == '/' and link[1] != '/':
-            elements.append(element)
+    elements = select_elements(soup)
 
     bar = IncrementalBar('Resource loading:', max=len(elements))
     for element in elements:
@@ -38,6 +33,17 @@ def load_resources(url, file_path):
 
     with open(file_path, 'w') as file:
         file.write(str(soup))
+
+
+def select_elements(soup):
+    selected_elements = []
+
+    for element in (soup.find_all(['img', 'link', 'script'])):
+        attribute = 'href' if element.name == 'link' else 'src'
+        link = element.get(attribute)
+        if link and link[0] == '/' and link[1] != '/':
+            selected_elements.append(element)
+    return selected_elements
 
 
 def save(url, dir_path):
