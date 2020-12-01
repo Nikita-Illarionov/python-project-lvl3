@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import re
 import logging
 from progress.bar import IncrementalBar
+from urllib.parse import urlparse, urljoin
 
 
 def load_resources(url, file_path):
@@ -21,12 +22,11 @@ def load_resources(url, file_path):
     _, dir_name = os.path.split(dir_path)
 
     elements = select_elements(soup)
-
     bar = IncrementalBar('Resource loading:', max=len(elements))
     for element in elements:
         attribute = 'href' if element.name == 'link' else 'src'
         link = element.get(attribute)
-        resource_path = save(url + link, dir_path)
+        resource_path = save(urljoin(url, link), dir_path)
         element[attribute] = resource_path
         bar.next()
     bar.finish()
@@ -41,7 +41,7 @@ def select_elements(soup):
     for element in (soup.find_all(['img', 'link', 'script'])):
         attribute = 'href' if element.name == 'link' else 'src'
         link = element.get(attribute)
-        if link and link[0] == '/' and link[1] != '/':
+        if link and (urlparse(link).netloc, urlparse(link).scheme) == ('', ''):
             selected_elements.append(element)
     return selected_elements
 

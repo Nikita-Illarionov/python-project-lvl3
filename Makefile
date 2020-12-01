@@ -9,3 +9,9 @@ test:
 
 coverage:
 	poetry run coverage xml
+
+build:
+	poetry build
+
+package-install:
+	pip install --user dist/*.whl
