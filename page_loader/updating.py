@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import logging
+from progress.bar import IncrementalBar
 
 
 def load_resources(url, file_path):
@@ -18,19 +19,22 @@ def load_resources(url, file_path):
         os.mkdir(dir_path)
 
     _, dir_name = os.path.split(dir_path)
-    resources = {
-                'img': 'src',
-                'link': 'href',
-                'script': 'src'
-                }
 
-    for resource in resources:
-        attribute = resources[resource]
-        for element in soup.find_all(resource):
-            link = element.get(attribute)
-            if link and link[0] == '/' and link[1] != '/':
-                resource_path = save(url + link, dir_path)
-                element[attribute] = resource_path
+    elements = []
+    for element in (soup.find_all(['img', 'link', 'script'])):
+        attribute = 'href' if element.name == 'link' else 'src'
+        link = element.get(attribute)
+        if link and link[0] == '/' and link[1] != '/':
+            elements.append(element)
+
+    bar = IncrementalBar('Resource loading:', max=len(elements))
+    for element in elements:
+        attribute = 'href' if element.name == 'link' else 'src'
+        link = element.get(attribute)
+        resource_path = save(url + link, dir_path)
+        element[attribute] = resource_path
+        bar.next()
+    bar.finish()
 
     with open(file_path, 'w') as file:
         file.write(str(soup))
