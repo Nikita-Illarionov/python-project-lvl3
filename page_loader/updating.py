@@ -43,8 +43,6 @@ def load_resources(url, file_path):
 
 def get_elements(page):
     soup_for_page = BeautifulSoup(page, 'html.parser')
-    for item in soup_for_page.find_all(list(tags)):
-        logging.info(f'{item}')
     return list(filter(isLocal, soup_for_page.find_all(list(tags))))
 
 
@@ -52,9 +50,7 @@ def isLocal(element):
     link = element.get(tags[element.name])
     scheme = urlparse(link).scheme
     netloc = urlparse(link).netloc
-    if link:
-        return True
-    return False
+    return link and scheme == '' and netloc == ''
 
 
 def save(url, dir_path):
