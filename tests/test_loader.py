@@ -1,4 +1,4 @@
-from page_loader.page_loader import download
+from page_loader import download
 import tempfile
 import sys
 import requests_mock
