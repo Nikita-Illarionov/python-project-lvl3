@@ -11,9 +11,8 @@ class NetworkError(Exception):
 def download(url, output_path):
     path_to_file = make_path(url, output_path)
     request = requests.get(url)
-    if request.status_code != 200:
-        logging.error('Status code is not 200.')
-        raise NetworkError()
+    if request.status_code in [404, 500]:
+        raise requests.exceptions.HTTPError
     save(request.text, path_to_file)
     logging.info(f'page saved in {path_to_file}')
     return path_to_file

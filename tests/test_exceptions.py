@@ -1,4 +1,5 @@
 import pytest
+import requests
 import tempfile
 import requests_mock
 from page_loader import download
@@ -16,8 +17,8 @@ def test_file_not_found():
 
 
 def test_exception():
-    with pytest.raises(Exception):
+    with pytest.raises(requests.exceptions.HTTPError):
         with tempfile.TemporaryDirectory() as tmpdirname:
             with requests_mock.Mocker() as m:
-                m.get(url, status_code=400)
+                m.get(url, status_code=500)
                 download(url, tmpdirname)

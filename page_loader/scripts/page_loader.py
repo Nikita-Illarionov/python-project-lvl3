@@ -3,6 +3,7 @@ from page_loader import download
 from page_loader.updating import load_resources
 import logging
 import sys
+import requests
 
 
 def main():
@@ -19,6 +20,9 @@ def main():
         sys.exit(1)
     except FileNotFoundError:
         logging.error('no such directory')
+        sys.exit(1)
+    except requests.exceptions.HTTPError:
+        logging.error('some mistake with http')
         sys.exit(1)
     except Exception as e:
         logging.error(e)
