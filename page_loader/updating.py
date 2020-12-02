@@ -43,6 +43,8 @@ def load_resources(url, file_path):
 
 def get_elements(page):
     soup_for_page = BeautifulSoup(page, 'html.parser')
+    print('not local:\n\n')
+    print(soup_for_page.find_all(list(tags)))
     return list(filter(isLocal, soup_for_page.find_all(list(tags))))
 
 
