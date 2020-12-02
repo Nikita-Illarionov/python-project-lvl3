@@ -6,7 +6,7 @@ import requests_mock
 
 url = 'http://test.com'
 with open(sys.path[0] + '/fixtures/answer.html', 'r') as file:
-    answer_page = file.read()
+    real_page = file.read()
 
 
 with tempfile.TemporaryDirectory() as tmpdirname:
@@ -17,5 +17,5 @@ with tempfile.TemporaryDirectory() as tmpdirname:
         loading_page = file.read()
 
 
-def test_loader():
-    assert loading_page == answer_page
+def test_load():
+    assert loading_page == real_page
