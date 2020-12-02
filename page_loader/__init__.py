@@ -18,8 +18,8 @@ def download(url, output_path):
     save(request.text, path_to_file)
     with open(path_to_file, 'r') as file:
         soup = BeautifulSoup(file.read(), 'html.parser')
-    elements = soup.find_all(['img', 'script', 'link'])
-    logging.info(f'that\'s all elements {elements}, {len(elements)}')
+    for item in soup.find_all(['img', 'script', 'link']):
+        logging.info(f'element: {item}\n')
     load_resources(url, path_to_file)
     return path_to_file
 
