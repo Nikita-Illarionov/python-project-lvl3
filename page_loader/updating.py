@@ -28,6 +28,7 @@ def load_resources(url, file_path):
 
     _, dir_name = os.path.split(dir_path)
 
+    logging.error('f{soup.find_all(list(tags))}')
     elements = list(filter(isLocal, soup.find_all(list(tags))))
     bar = IncrementalBar('Resource loading:', max=len(elements))
     for element in elements:
