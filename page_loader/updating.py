@@ -51,8 +51,8 @@ def get_elements(page):
 def isLocal(element):
     link = element.get(tags[element.name])
     scheme = urlparse(link).scheme
-    netloc = urlparse(link).netloc
-    return link and scheme == '' or link and netloc == ''
+    #  netloc = urlparse(link).netloc
+    return link and scheme == ''
 
 
 def save(url, dir_path):
