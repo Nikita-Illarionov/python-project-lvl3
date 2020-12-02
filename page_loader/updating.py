@@ -49,10 +49,12 @@ def isLocal(element):
 
 
 def save(url, dir_path):
-    resource_path = os.path.join(dir_path, name_resource(url))
+    _, dir_name = os.path.split(dir_path)
+    name = name_resource(url)
+    resource_path = os.path.join(dir_path, name)
     with open(resource_path, 'wb') as file:
         file.write(requests.get(url).content)
-    return resource_path
+    return os.path.join(dir_name, name)
 
 
 def name_resource(url):
