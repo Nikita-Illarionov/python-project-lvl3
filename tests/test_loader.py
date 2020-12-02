@@ -1,4 +1,4 @@
-from page_loader.loading_page import download, make_path
+from page_loader.loading_page import download
 import tempfile
 import sys
 import requests_mock
@@ -12,8 +12,8 @@ with open(sys.path[0] + '/fixtures/answer.html', 'r') as file:
 with tempfile.TemporaryDirectory() as tmpdirname:
     with requests_mock.Mocker() as m:
         m.get(url, text="It's ok.\n")
-        download(url, tmpdirname)
-    with open(make_path(url, tmpdirname), 'r') as file:
+        file_path = download(url, tmpdirname)
+    with open(file_path, 'r') as file:
         loading_page = file.read()
 
 

@@ -7,6 +7,13 @@ from progress.bar import IncrementalBar
 from urllib.parse import urlparse, urljoin
 
 
+tags = {
+            'link': 'href',
+            'img': 'src',
+            'script': 'src'
+       }
+
+
 def load_resources(url, file_path):
     with open(file_path, 'r') as file:
         soup = BeautifulSoup(file, 'html.parser')
@@ -21,13 +28,12 @@ def load_resources(url, file_path):
 
     _, dir_name = os.path.split(dir_path)
 
-    elements = list(filter(IsLocal, soup.find_all(['img', 'link', 'script'])))
+    elements = list(filter(isLocal, soup.find_all(list(tags))))
     bar = IncrementalBar('Resource loading:', max=len(elements))
     for element in elements:
-        attribute = 'href' if element.name == 'link' else 'src'
-        link = element.get(attribute)
-        resource_path = save(urljoin(url, link), dir_path)
-        element[attribute] = resource_path
+        tag = tags[element.name]
+        link = element.get(tag)
+        element[tag] = save(urljoin(url, link), dir_path)
         bar.next()
     bar.finish()
 
@@ -35,12 +41,11 @@ def load_resources(url, file_path):
         file.write(str(soup))
 
 
-def IsLocal(element):
-    attribute = 'href' if element.name == 'link' else 'src'
-    link = element.get(attribute)
-    if link and (urlparse(link).netloc, urlparse(link).scheme) == ('', ''):
-        return True
-    return False
+def isLocal(element):
+    link = element.get(tags[element.name])
+    scheme = urlparse(link).scheme
+    netloc = urlparse(link).netloc
+    return link and scheme == '' and netloc == ''
 
 
 def save(url, dir_path):
