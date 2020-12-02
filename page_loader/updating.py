@@ -41,6 +41,11 @@ def load_resources(url, file_path):
         file.write(str(soup))
 
 
+def get_elements(page):
+    soup_for_page = BeautifulSoup(page, 'html.parser')
+    return list(filter(isLocal, soup_for_page.find_all(list(tags))))
+
+
 def isLocal(element):
     link = element.get(tags[element.name])
     scheme = urlparse(link).scheme

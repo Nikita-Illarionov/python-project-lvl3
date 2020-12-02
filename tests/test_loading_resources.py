@@ -2,9 +2,8 @@ import tempfile
 import sys
 import requests_mock
 from page_loader.loading_page import download
-from page_loader.updating import load_resources, isLocal
+from page_loader.updating import load_resources, get_elements
 from urllib.parse import urljoin
-from bs4 import BeautifulSoup
 import os
 
 tags = {
@@ -33,11 +32,10 @@ with tempfile.TemporaryDirectory() as tmpdirname:
         load_resources(url, file_path)
         #  ----------------------------------------------------------
         with open(file_path, 'r') as file:
-            soup = BeautifulSoup(file.read(), 'html.parser')
-        items = list(filter(isLocal, soup.find_all(list(tags))))
-        for item in items:
-            tag = tags[item.name]
-            link = item.get(tag)
+            elements = get_elements(file.read())
+        for element in elements:
+            tag = tags[element.name]
+            link = element.get(tag)
             with open(os.path.join(tmpdirname, link), 'r') as file:
                 fact_content.append(file.read())
 
