@@ -2,7 +2,7 @@ import tempfile
 import sys
 import requests_mock
 from page_loader import download
-from page_loader.updating import load_resources, get_elements
+from page_loader.updating import get_elements
 from urllib.parse import urljoin
 import os
 
@@ -29,7 +29,6 @@ with tempfile.TemporaryDirectory() as tmpdirname:
          in zip(resources_url, real_content)]
         #  ------------ download ------------------------------------
         file_path = download(url, tmpdirname)
-        load_resources(url, file_path)
         #  ----------------------------------------------------------
         with open(file_path, 'r') as file:
             elements = get_elements(file.read())

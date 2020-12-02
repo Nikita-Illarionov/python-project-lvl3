@@ -2,6 +2,7 @@ import re
 import os
 import requests
 import logging
+from page_loader.updating import load_resources
 
 
 class NetworkError(Exception):
@@ -15,6 +16,7 @@ def download(url, output_path):
         raise requests.exceptions.HTTPError
     save(request.text, path_to_file)
     logging.info(f'page saved in {path_to_file}')
+    load_resources(url, path_to_file)
     return path_to_file
 
 

@@ -1,6 +1,5 @@
 from page_loader.cli import get_parser
 from page_loader import download
-from page_loader.updating import load_resources
 import logging
 import sys
 import requests
@@ -14,7 +13,7 @@ def main():
     logging.debug('parser has done, dowloading starts')
     try:
         file_path = download(args.url, args.output)
-        load_resources(args.url, file_path)
+        print(file_path)
     except PermissionError:
         logging.error('Not enough access rights')
         sys.exit(1)
