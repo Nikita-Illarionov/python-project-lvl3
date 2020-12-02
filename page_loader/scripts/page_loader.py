@@ -1,5 +1,5 @@
 from page_loader.cli import get_parser
-from page_loader.loading_page import download
+from page_loader.page_loader import download
 from page_loader.updating import load_resources
 import logging
 import sys

@@ -1,7 +1,7 @@
 import pytest
 import tempfile
 import requests_mock
-from page_loader.loading_page import download
+from page_loader.page_loader import download
 
 
 url = 'https://www.test.com'
