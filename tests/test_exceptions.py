@@ -4,7 +4,7 @@ import requests_mock
 from page_loader.loading_page import download
 
 
-url = 'https://test.com'
+url = 'https://www.test.com'
 
 
 def test_file_not_found():
