@@ -17,8 +17,8 @@ def download(url, output_path):
         raise requests.exceptions.HTTPError
     save(request.text, path_to_file)
     with open(path_to_file, 'r') as file:
-        soup = BeautifulSoup(file.read(), 'html.parser')
-    logging.info(f'{soup.prettify()}\n')
+        page = file.read()
+    logging.info(page)
     load_resources(url, path_to_file)
     return path_to_file
 
