@@ -28,16 +28,20 @@ def load_resources(url, file_path):
 
     _, dir_name = os.path.split(dir_path)
 
-    logging.error('f{soup.find_all(list(tags))}')
     all_elements = get_all_elements(soup)
     elements = list(filter(isLocal, all_elements))
+    some_box = []
     bar = IncrementalBar('Resource loading:', max=len(elements))
     for element in elements:
         tag = tags[element.name]
         link = element.get(tag)
-        element[tag] = save(urljoin(url, link), dir_path)
+        some_box.append(save(urljoin(url, link), dir_path))
         bar.next()
     bar.finish()
+    for element, new_way in zip(elements, some_box):
+        tag = tags[element.name]
+        link = element.get(tag)
+        element[tag] = new_way
 
     with open(file_path, 'w') as file:
         file.write(str(soup))
@@ -74,11 +78,12 @@ def save(url, dir_path):
     _, dir_name = os.path.split(dir_path)
     name = name_resource(url)
     resource_path = os.path.join(dir_path, name)
+    content = requests.get(url).content
     while os.path.isfile(resource_path):
         name = correct_name(name)
         resource_path = os.path.join(dir_path, name)
     with open(resource_path, 'wb') as file:
-        file.write(requests.get(url).content)
+        file.write(content)
     return os.path.join(dir_name, name)
 
 
