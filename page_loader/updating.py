@@ -44,7 +44,7 @@ def load_resources(url, file_path):
         element[tag] = new_way
 
     with open(file_path, 'w') as file:
-        file.write(str(soup))
+        file.write(soup.prettify())
 
 
 def get_elements(page):
