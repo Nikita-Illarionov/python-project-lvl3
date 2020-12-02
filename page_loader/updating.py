@@ -29,7 +29,8 @@ def load_resources(url, file_path):
     _, dir_name = os.path.split(dir_path)
 
     logging.error('f{soup.find_all(list(tags))}')
-    elements = list(filter(isLocal, soup.find_all(list(tags))))
+    all_elements = get_all_elements(soup)
+    elements = list(filter(isLocal, all_elements))
     bar = IncrementalBar('Resource loading:', max=len(elements))
     for element in elements:
         tag = tags[element.name]
@@ -47,6 +48,21 @@ def get_elements(page):
     return list(filter(isLocal, soup_for_page.find_all(list(tags))))
 
 
+def get_all_elements(soup):
+    result = []
+    search_elements(soup.find_all(list(tags)), result)
+    return result
+
+
+def search_elements(obj, listing):
+    for item in obj:
+        link = item.get(tags[item.name])
+        if link:
+            listing.append(item)
+        if item.find_all(list(tags)):
+            search_elements(item.find_all(list(tags)), listing)
+
+
 def isLocal(element):
     link = element.get(tags[element.name])
     scheme = urlparse(link).scheme
@@ -58,9 +74,17 @@ def save(url, dir_path):
     _, dir_name = os.path.split(dir_path)
     name = name_resource(url)
     resource_path = os.path.join(dir_path, name)
+    while os.path.isfile(resource_path):
+        name = correct_name(name)
+        resource_path = os.path.join(dir_path, name)
     with open(resource_path, 'wb') as file:
         file.write(requests.get(url).content)
     return os.path.join(dir_name, name)
+
+
+def correct_name(name):
+    way, ext = os.path.splitext(name)
+    return way + '1' + ext
 
 
 def name_resource(url):

@@ -3,7 +3,6 @@ import os
 import requests
 import logging
 from page_loader.updating import load_resources
-from bs4 import BeautifulSoup
 
 
 class NetworkError(Exception):
@@ -16,9 +15,7 @@ def download(url, output_path):
     if request.status_code in [404, 500]:
         raise requests.exceptions.HTTPError
     save(request.text, path_to_file)
-    with open(path_to_file, 'r') as file:
-        page = file.read()
-    logging.info(page)
+    logging.info(f'page saved in {path_to_file}')
     load_resources(url, path_to_file)
     return path_to_file
 
