@@ -15,9 +15,7 @@ tags = {
 
 
 def load_resources(url, file_path):
-    with open(file_path, 'r') as file:
-        soup = BeautifulSoup(file, 'html.parser')
-
+    soup = BeautifulSoup(requests.get(url).text, 'html.parser')
     dir_path, _ = os.path.splitext(file_path)
     dir_path += '_files'
 

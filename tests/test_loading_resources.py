@@ -31,7 +31,8 @@ with tempfile.TemporaryDirectory() as tmpdirname:
         file_path = download(url, tmpdirname)
         #  ----------------------------------------------------------
         with open(file_path, 'r') as file:
-            elements = get_elements(file.read(), url)
+            fact_page = file.read()
+            elements = get_elements(fact_page, url)
         for element in elements:
             tag = tags[element.name]
             link = element.get(tag)
