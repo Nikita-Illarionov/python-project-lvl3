@@ -5,10 +5,6 @@ import logging
 from page_loader.updating import load_resources
 
 
-class NetworkError(Exception):
-    pass
-
-
 def download(url, output_path):
     path_to_file = make_path(url, output_path)
     request = requests.get(url)
