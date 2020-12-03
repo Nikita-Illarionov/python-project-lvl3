@@ -39,7 +39,7 @@ def load_resources(url, file_path):
     bar.finish()
 
     with open(file_path, 'w') as file:
-        file.write(soup.prettify(formatter='html'))
+        file.write(str(soup))
 
 
 def get_elements(page, url):
