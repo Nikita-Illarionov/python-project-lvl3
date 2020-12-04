@@ -5,7 +5,7 @@
 <a href="https://github.com/Nikita-Illarionov/python-project-lvl3/actions"><img src="https://github.com/Nikita-Illarionov/python-project-lvl3/workflows/Travis_CI/badge.svg" /></a>
 
 ### Hexlet tests and linter status:
-![Actions Status](/workflows/hexlet-check/badge.svg)
+![Actions Status](https://github.com/Nikita-Illarionov/python-project-lvl3/workflows/hexlet-check/badge.svg)
 
 page-loader - утилита, которая скачивает страницу из сети и кладет ее в указанную директорию (по умолчанию в директорию запуска программы).
 ~~~
