@@ -8,7 +8,7 @@ from page_loader.updating import load_resources
 def download(url, output_path):
     path_to_file = make_path(url, output_path)
     request = requests.get(url)
-    if request.status_code in [404, 500]:
+    if request.status_code in [404, 500, 400]:
         raise requests.exceptions.HTTPError
     save(request.text, path_to_file)
     logging.info(f'page saved in {path_to_file}')
