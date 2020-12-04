@@ -1,7 +1,8 @@
 from page_loader.cli import get_parser
-from page_loader import download, HTTPError404, HTTPError500
+from page_loader import download
 import logging
 import sys
+import requests
 
 
 def main():
@@ -13,16 +14,13 @@ def main():
         file_path = download(args.url, args.output)
         print(file_path)
     except PermissionError:
-        logging.error('Not enough access rights in {args.ouput}')
+        logging.error('Not enough access rights')
         sys.exit(1)
     except FileNotFoundError:
-        logging.error(f'No such directory: {args.output}')
+        logging.error('No such directory')
         sys.exit(1)
-    except HTTPError404:
-        logging.error('HTTP error 404 for {args.url}: not found')
+    except requests.exceptions.HTTPError:
         sys.exit(1)
-    except HTTPError500:
-        logging.error('HTTP error 500 for {args.url}: Internal Server Error')
     except Exception as e:
         logging.error(e)
         sys.exit(1)
