@@ -11,43 +11,60 @@ tags = {'link': 'href', 'img': 'src', 'script': 'src'}
 
 
 def load_resources(url, file_path):
-    soup = BeautifulSoup(requests.get(url).text, 'html.parser')
-    dir_path, _ = os.path.splitext(file_path)
-    dir_path += '_files'
+    with open(file_path, 'r') as file:
+        page = file.read()
+
+    dir_path = os.path.splitext(file_path)[0] + '_files'
+    dir_name = os.path.split(dir_path)[1]
 
     if os.path.isdir(dir_path):
         logging.warning(f'{dir_path} already exists. Content can be changed')
     else:
         os.mkdir(dir_path)
 
-    _, dir_name = os.path.split(dir_path)
+    download_resources(page, url, dir_path)
+    new_page = change_page(page, url, dir_name)
 
-    elements = list(filter(lambda x: isLocal(x, url),
-                    soup.find_all(list(tags))))
+    with open(file_path, 'w') as file:
+        file.write(new_page)
+
+
+def download_resources(page, url, dir_path):
+    elements = get_elements(page, url)
     bar = IncrementalBar('Resource loading:', max=len(elements))
     for element in elements:
         tag = tags[element.name]
         link = element.get(tag)
-        element[tag] = save(urljoin(url, link), dir_path)
+        save(urljoin(url, link), dir_path)
         bar.next()
     bar.finish()
 
-    with open(file_path, 'w') as file:
-        file.write(soup.prettify(formatter='html5'))
+
+def change_page(page, url, dir_name):
+    soup = BeautifulSoup(page, 'html.parser')
+    elements = list(filter(lambda x: isLocal(x, url),
+                    soup.find_all(list(tags))))
+    for element in elements:
+        tag = tags[element.name]
+        link = element.get(tag)
+        name = name_resource(urljoin(url, link))
+        element[tag] = os.path.join(dir_name, name)
+    return soup.prettify(formatter='html5')
 
 
 def get_elements(page, url):
-    soup_for_page = BeautifulSoup(page, 'html.parser')
+    soup = BeautifulSoup(page, 'html.parser')
     return list(filter(lambda x: isLocal(x, url),
-                soup_for_page.find_all(list(tags))))
+                soup.find_all(list(tags))))
 
 
 def isLocal(element, url):
     link = element.get(tags[element.name])
     scheme = urlparse(link).scheme
     netloc = urlparse(link).netloc
-    cond = link == urljoin(url, link) and netloc == urlparse(url).netloc
-    return (link and scheme == '' and netloc == '') or cond
+    condition1 = link and scheme == '' and netloc == ''
+    condition2 = link == urljoin(url, link) and netloc == urlparse(url).netloc
+    return condition1 or condition2
 
 
 def save(url, dir_path):
@@ -56,7 +73,6 @@ def save(url, dir_path):
     resource_path = os.path.join(dir_path, name)
     with open(resource_path, 'wb') as file:
         file.write(requests.get(url).content)
-    return os.path.join(dir_name, name)
 
 
 def name_resource(url):
