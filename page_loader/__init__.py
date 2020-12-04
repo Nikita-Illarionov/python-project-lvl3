@@ -17,9 +17,9 @@ def download(url, output_path):
     path_to_file = make_path(url, output_path)
     request = requests.get(url)
     if request.status_code == 404:
-        raise HTTPError404
+        raise HTTPError404()
     if request.status_code == 500:
-        raise HTTPError500
+        raise HTTPError500()
     save(request.text, path_to_file)
     logging.info(f'page saved in {path_to_file}')
     load_resources(url, path_to_file)
