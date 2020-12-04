@@ -7,11 +7,7 @@ from progress.bar import IncrementalBar
 from urllib.parse import urlparse, urljoin
 
 
-tags = {
-            'link': 'href',
-            'img': 'src',
-            'script': 'src'
-       }
+tags = {'link': 'href', 'img': 'src', 'script': 'src'}
 
 
 def load_resources(url, file_path):

@@ -6,11 +6,7 @@ from page_loader.updating import get_elements
 from urllib.parse import urljoin
 import os
 
-tags = {
-        'link': 'href',
-        'script': 'src',
-        'img': 'src'
-       }
+tags = {'link': 'href', 'script': 'src', 'img': 'src'}
 
 url = 'https://resource.loading.test.com'
 resources_url = [urljoin(url, '/assets/application.css'),
