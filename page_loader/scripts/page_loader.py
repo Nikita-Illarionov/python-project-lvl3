@@ -1,5 +1,5 @@
 from page_loader.cli import get_parser
-from page_loader import download
+from page_loader import download, HTTPError
 import logging
 import sys
 import requests
@@ -20,6 +20,7 @@ def main():
         logging.error('No such directory')
         sys.exit(1)
     except requests.exceptions.HTTPError:
+        logging.error(HTTPError.description)
         sys.exit(1)
     except Exception as e:
         logging.error(e)

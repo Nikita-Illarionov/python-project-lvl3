@@ -5,14 +5,18 @@ import logging
 from page_loader.updating import load_resources
 
 
+class HTTPError():
+    description = ''
+
+
 def download(url, output_path):
     path_to_file = make_path(url, output_path)
     request = requests.get(url)
     if request.status_code == 404:
-        logging.error('HTTP error 404 for {args.url}: Not found')
+        HTTPError.description = 'HTTP error 404: Not found'
         raise requests.exceptions.HTTPError
     if request.status_code == 500:
-        logging.error('HTTP error 500 for {args.url}: Internal Server Error')
+        HTTPError.description = 'HTTP error 500 for : Internal Server Error'
         raise requests.exceptions.HTTPError
     save(request.text, path_to_file)
     logging.info(f'page saved in {path_to_file}')
