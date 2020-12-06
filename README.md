@@ -30,10 +30,13 @@ $ page-loader https://hexlet.io
  - после установки в указанной директории (либо в текущей, если она не была указана) будет файл с расширением html, который и будет являться сохраненной страницей.
 
 Видео-пример установки и использования утилиты page-loader:
+
 https://asciinema.org/a/PFMtEefhrrANCCTg0hifKkAF8
 
 Пример использования утилиты:
+
 https://asciinema.org/a/ggUvqUqcWX4qGlwfDEaslaS28
 
 Пример использования утилиты с предупреждениями и исключениями:
+
 https://asciinema.org/a/Mm2026Xq8935nfOEtVUxEDUAL
