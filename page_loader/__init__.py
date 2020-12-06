@@ -19,7 +19,6 @@ def download(url, output_path):
         HTTPError.description = 'HTTP error 500 for : Internal Server Error'
         raise requests.exceptions.HTTPError
     save(request.text, path_to_file)
-    logging.info(f'page saved in {path_to_file}')
     load_resources(url, path_to_file)
     return path_to_file
 

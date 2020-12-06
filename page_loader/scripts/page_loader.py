@@ -12,7 +12,7 @@ def main():
     args = parser.parse_args()
     try:
         file_path = download(args.url, args.output)
-        print(file_path)
+        logging.info(f'Page saved in {file_path}')
     except PermissionError:
         logging.error('Not enough access rights')
         sys.exit(1)
