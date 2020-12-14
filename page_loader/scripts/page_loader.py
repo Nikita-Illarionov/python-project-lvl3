@@ -1,5 +1,6 @@
 from page_loader.cli import get_parser
 from page_loader import download, HTTPError
+from page_loader.loading import load_page
 import logging
 import sys
 import requests
@@ -13,6 +14,7 @@ def main():
     try:
         file_path = download(args.url, args.output)
         print(f'Page saved in {file_path}')
+        load_page(args.url, file_path)
     except PermissionError:
         logging.error('Not enough access rights')
         sys.exit(1)
