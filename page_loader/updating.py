@@ -3,9 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import logging
-from progress.bar import IncrementalBar
+#  from progress.bar import IncrementalBar
 from urllib.parse import urlparse, urljoin
-
 
 tags = {'link': 'href', 'img': 'src', 'script': 'src'}
 
@@ -15,64 +14,46 @@ def load_resources(url, file_path):
         page = file.read()
 
     dir_path = os.path.splitext(file_path)[0] + '_files'
-    dir_name = os.path.split(dir_path)[1]
+    path, dir_name = os.path.split(dir_path)
 
     if os.path.isdir(dir_path):
         logging.warning(f'{dir_path} already exists. Content can be changed')
     else:
         os.mkdir(dir_path)
 
-    download_resources(page, url, dir_path)
-    new_page = change_page(page, url, dir_name)
+    resources, new_page = change_page(url, page, dir_name)
+    for resource in resources:
+        link, way = resource
+        save(requests.get(link).content, os.path.join(path, way))
 
     with open(file_path, 'w') as file:
         file.write(new_page)
 
 
-def download_resources(page, url, dir_path):
-    elements = get_elements(page, url)
-    bar = IncrementalBar('Resource loading:', max=len(elements))
-    for element in elements:
-        tag = tags[element.name]
-        link = element.get(tag)
-        save(urljoin(url, link), dir_path)
-        bar.next()
-    bar.finish()
-
-
-def change_page(page, url, dir_name):
+def change_page(url, page, dir_name):
     soup = BeautifulSoup(page, 'html.parser')
+    resources = []
     elements = list(filter(lambda x: isLocal(x, url),
                     soup.find_all(list(tags))))
     for element in elements:
         tag = tags[element.name]
-        link = element.get(tag)
-        name = name_resource(urljoin(url, link))
-        element[tag] = os.path.join(dir_name, name)
-    return soup.prettify(formatter='html5')
+        link = urljoin(url, element.get(tag))
+        way = os.path.join(dir_name, name_resource(link))
+        element[tag] = way
+        resources.append((link, way))
+    return resources, soup.prettify(formatter='html5')
 
 
-def get_elements(page, url):
-    soup = BeautifulSoup(page, 'html.parser')
-    return list(filter(lambda x: isLocal(x, url),
-                soup.find_all(list(tags))))
-
-
-def isLocal(element, url):
+def isLocal(element, base_url):
     link = element.get(tags[element.name])
-    scheme = urlparse(link).scheme
-    netloc = urlparse(link).netloc
-    condition1 = link and scheme == '' and netloc == ''
-    condition2 = link == urljoin(url, link) and netloc == urlparse(url).netloc
-    return condition1 or condition2
+    netloc1 = urlparse(base_url).netloc
+    netloc2 = urlparse(urljoin(base_url, link)).netloc
+    return netloc1 == netloc2
 
 
-def save(url, dir_path):
-    _, dir_name = os.path.split(dir_path)
-    name = name_resource(url)
-    resource_path = os.path.join(dir_path, name)
-    with open(resource_path, 'wb') as file:
-        file.write(requests.get(url).content)
+def save(content, path_to_resource):
+    with open(path_to_resource, 'wb') as file:
+        file.write(content)
 
 
 def name_resource(url):
