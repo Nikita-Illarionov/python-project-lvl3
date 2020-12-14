@@ -2,6 +2,7 @@ import os
 import requests
 from page_loader.url import to_file_name
 from page_loader.storage import save
+from page_loader.loading import load_page
 
 
 class HTTPError():
@@ -18,4 +19,5 @@ def download(base_url, output_path):
         HTTPError.description = 'HTTP error 500 for : Internal Server Error'
         raise requests.exceptions.HTTPError
     save(request.text, path_to_file)
+    load_page(base_url, path_to_file)
     return path_to_file
