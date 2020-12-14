@@ -12,12 +12,12 @@ def main():
     args = parser.parse_args()
     try:
         file_path = download(args.url, args.output)
-        logging.info(f'Page saved in {file_path}')
+        print(f'Page saved in {file_path}')
     except PermissionError:
         logging.error('Not enough access rights')
         sys.exit(1)
     except FileNotFoundError:
-        logging.error('No such directory')
+        logging.error('No such file or directory')
         sys.exit(1)
     except requests.exceptions.HTTPError:
         logging.error(HTTPError.description)
