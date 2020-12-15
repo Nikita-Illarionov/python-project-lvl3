@@ -1,7 +1,8 @@
 import pytest
+import requests
 import tempfile
 import requests_mock
-from page_loader import download, PageLoadingError
+from page_loader import download
 
 
 url = 'https://www.test.com'
@@ -16,7 +17,7 @@ def test_file_not_found():
 
 
 def test_exception():
-    with pytest.raises(PageLoadingError):
+    with pytest.raises(requests.exceptions.HTTPError):
         with tempfile.TemporaryDirectory() as tmpdirname:
             with requests_mock.Mocker() as m:
                 m.get(url, status_code=500)
