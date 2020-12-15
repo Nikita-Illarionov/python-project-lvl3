@@ -19,7 +19,7 @@ def download(base_url, output_path):
         if request.status_code == 500:
             raise requests.exceptions.HTTPError
     except requests.exceptions.HTTPError as e:
-        raise PageLoadingError('status code is 404 or 500') from e
+        raise PageLoadingError('Status code is 404 or 500') from e
     save(request.text, path_to_file)
     load_page(base_url, path_to_file)
     return path_to_file
