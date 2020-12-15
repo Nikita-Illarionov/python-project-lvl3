@@ -1,8 +1,7 @@
 from page_loader.cli import get_parser
-from page_loader import download, HTTPError
+from page_loader import download, PageLoadingError
 import logging
 import sys
-import requests
 
 
 def main():
@@ -13,14 +12,13 @@ def main():
     try:
         file_path = download(args.url, args.output)
         print(f'Page saved in {file_path}')
+    except PageLoadingError as e:
+        logging.error(str(e))
     except PermissionError:
         logging.error('Not enough access rights')
         sys.exit(1)
     except FileNotFoundError:
         logging.error('No such file or directory')
-        sys.exit(1)
-    except requests.exceptions.HTTPError:
-        logging.error(HTTPError.description)
         sys.exit(1)
     except Exception as e:
         logging.error(e)
