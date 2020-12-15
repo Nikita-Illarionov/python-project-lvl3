@@ -14,6 +14,7 @@ def main():
         print(f'Page saved in {file_path}')
     except PageLoadingError as e:
         logging.error(str(e))
+        sys.exit(1)
     except PermissionError:
         logging.error('Not enough access rights')
         sys.exit(1)
