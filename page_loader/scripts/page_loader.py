@@ -13,7 +13,7 @@ def main():
         file_path = download(args.url, args.output)
         print(f'Page saved in {file_path}')
     except PageLoadingError as e:
-        logging.error('status code is 500 or 400')
+        logging.error(e.text)
         sys.exit(1)
     except PermissionError:
         logging.error('Not enough access rights')
