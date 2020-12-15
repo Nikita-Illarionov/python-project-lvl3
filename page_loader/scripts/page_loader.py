@@ -13,6 +13,7 @@ def main():
         file_path = download(args.url, args.output)
         print(f'Page saved in {file_path}')
     except PageLoadingError as e:
+        logging.debug(e.cause)
         logging.error(e.error_message)
         sys.exit(1)
     except PermissionError:
