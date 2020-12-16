@@ -1,11 +1,10 @@
 from page_loader.cli import get_parser
 from page_loader import download, PageLoadingError
-from page_loader.logging import get_logging
+from page_loader.logging import logging
 import sys
 
 
 def main():
-    logging = get_logging()
     parser = get_parser()
     args = parser.parse_args()
     try:
