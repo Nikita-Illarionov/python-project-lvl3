@@ -21,7 +21,7 @@ def download(base_url, output_path):
         if code in [500, 404]:
             raise requests.exceptions.HTTPError
     except requests.exceptions.HTTPError as e:
-        raise PageLoadingError(f'Error {code}: {error_messages[code]}') from e
+        raise PageLoadingError(f'{code} error: {error_messages[code]}') from e
     save(request.text, path_to_file)
     load_page(base_url, path_to_file)
     return path_to_file
