@@ -10,16 +10,18 @@ class PageLoadingError(requests.exceptions.HTTPError):
         self.error_message = error_message
 
 
+error_messages = {404: 'Not Found', 500: 'Internal Server'}
+
+
 def download(base_url, output_path):
     path_to_file = os.path.join(output_path, to_file_name(base_url))
     try:
         request = requests.get(base_url)
-        if request.status_code == 404:
-            raise requests.exceptions.HTTPError
-        if request.status_code == 500:
+        code = request.status_code
+        if code in [500, 404]:
             raise requests.exceptions.HTTPError
     except requests.exceptions.HTTPError as e:
-        raise PageLoadingError('Status code is 404 or 500') from e
+        raise PageLoadingError(f'Error {code}: {error_messages[code]}') from e
     save(request.text, path_to_file)
     load_page(base_url, path_to_file)
     return path_to_file
