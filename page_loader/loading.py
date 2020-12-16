@@ -1,7 +1,7 @@
 import os
 import requests
 import logging
-#  from progress.bar import IncrementalBar
+from progress.bar import IncrementalBar
 from page_loader.storage import save
 from page_loader.assets import change_page
 
@@ -23,6 +23,9 @@ def load_page(base_url, file_path):
     else:
         os.mkdir(dir_path)
 
+    bar = IncrementalBar('Resources loading: ', max=len(resources))
     for resource in resources:
         link, resource_path = resource
         save(requests.get(link).content, resource_path, mode='wb')
+        bar.next()
+    bar.finish()
