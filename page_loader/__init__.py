@@ -12,9 +12,6 @@ class PageLoadingError(requests.exceptions.HTTPError):
         self.error_message = error_message
 
 
-# error_messages = {404: 'Not Found', 500: 'Internal Server'}
-
-
 def download(base_url, output_path):
     path_to_file = os.path.join(output_path, to_file_name(base_url))
     try:

@@ -11,7 +11,7 @@ def change_page(base_url, page, dir_path):
     dir_path, dir_name = os.path.split(dir_path)
     soup = BeautifulSoup(page, 'html.parser')
     resources = []
-    elements = filter(lambda x: isLocal(x, base_url),
+    elements = filter(lambda x: is_local(x, base_url),
                       soup.find_all(list(tags)))
     for element in elements:
         tag = tags[element.name]
@@ -22,7 +22,7 @@ def change_page(base_url, page, dir_path):
     return resources, soup.prettify(formatter='html5')
 
 
-def isLocal(element, base_url):
+def is_local(element, base_url):
     link = element.get(tags[element.name])
     netloc1 = urlparse(base_url).netloc
     netloc2 = urlparse(urljoin(base_url, link)).netloc
