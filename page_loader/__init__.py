@@ -2,7 +2,9 @@ import os
 import requests
 from page_loader.url import to_file_name
 from page_loader.storage import save
-from page_loader.loading import load_page
+from page_loader.resources import download_resources
+from page_loader.assets import change_page
+import logging
 
 
 class PageLoadingError(requests.exceptions.HTTPError):
@@ -22,6 +24,16 @@ def download(base_url, output_path):
             raise requests.exceptions.HTTPError
     except requests.exceptions.HTTPError as e:
         raise PageLoadingError(f'{code} error: {error_messages[code]}') from e
-    save(request.text, path_to_file)
-    load_page(base_url, path_to_file)
+
+    dir_path = os.path.splitext(path_to_file)[0] + '_files'
+    resources, page = change_page(base_url, request.text, dir_path)
+    save(page, path_to_file)
+
+    if os.path.isdir(dir_path):
+        logging.warning(f'{dir_path} already exists. Content can be changed')
+    else:
+        os.mkdir(dir_path)
+
+    if resources:
+        download_resources(resources, dir_path)
     return path_to_file

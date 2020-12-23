@@ -11,8 +11,8 @@ def change_page(base_url, page, dir_path):
     dir_path, dir_name = os.path.split(dir_path)
     soup = BeautifulSoup(page, 'html.parser')
     resources = []
-    elements = list(filter(lambda x: isLocal(x, base_url),
-                    soup.find_all(list(tags))))
+    elements = filter(lambda x: isLocal(x, base_url),
+                      soup.find_all(list(tags)))
     for element in elements:
         tag = tags[element.name]
         link = urljoin(base_url, element.get(tag))
