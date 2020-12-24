@@ -1,6 +1,6 @@
 import sys
 import requests_mock
-from page_loader.assets import change_page
+from page_loader.assets import prepare_assets
 import os
 from urllib.parse import urljoin
 import requests
@@ -29,8 +29,9 @@ def test_page_loading():
             m.get(BASE_URL, text=testing_page)
             [m.get(url, text=content) for url, content
              in zip(RESOURCES_URL, expected_content)]
-            resources, page = change_page(BASE_URL, testing_page,
-                                          os.path.join(tmpdirname, DIR_NAME))
+            resources, page = prepare_assets(BASE_URL, testing_page,
+                                             os.path.join(tmpdirname,
+                                                          DIR_NAME))
             for resource, content in zip(resources, expected_content):
                 link, _ = resource
                 assert requests.get(link).text == content

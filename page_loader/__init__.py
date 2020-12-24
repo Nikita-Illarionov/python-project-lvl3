@@ -3,7 +3,7 @@ import requests
 from page_loader.url import to_file_name
 from page_loader.storage import save
 from page_loader.resources import download_resources
-from page_loader.assets import change_page
+from page_loader.assets import prepare_assets
 import logging
 
 
@@ -21,7 +21,7 @@ def download(base_url, output_path):
         raise PageLoadingError(e) from e
 
     dir_path = os.path.splitext(path_to_file)[0] + '_files'
-    resources, page = change_page(base_url, request.text, dir_path)
+    resources, page = prepare_assets(base_url, request.text, dir_path)
     save(page, path_to_file)
 
     if os.path.isdir(dir_path):

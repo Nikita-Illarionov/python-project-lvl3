@@ -7,7 +7,7 @@ from page_loader.url import to_file_name
 tags = {'link': 'href', 'img': 'src', 'script': 'src'}
 
 
-def change_page(base_url, page, dir_path):
+def prepare_assets(base_url, page, dir_path):
     dir_path, dir_name = os.path.split(dir_path)
     soup = BeautifulSoup(page, 'html.parser')
     resources = []
