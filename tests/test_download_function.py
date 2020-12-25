@@ -12,7 +12,7 @@ RESOURCES_URL = [urljoin(URL, '/assets/application.css'),
                  urljoin(URL, '/assets/professions/nodejs.png'),
                  urljoin(URL, '/runtime.js')]
 
-expected_content = RESOURCES_URL[:]
+EXPECTED_CONTENT = RESOURCES_URL[:]
 
 
 with open(os.path.join(sys.path[0], 'fixtures/page_after.html'), 'r') as file:
@@ -27,7 +27,7 @@ def test_page_loading():
         with requests_mock.Mocker() as m:
             m.get(URL, text=testing_page)
             [m.get(url, text=content) for url, content
-             in zip(RESOURCES_URL, expected_content)]
+             in zip(RESOURCES_URL, EXPECTED_CONTENT)]
             file_path = download(URL, tmpdirname)
             with open(file_path, 'r') as file:
                 page = file.read()
