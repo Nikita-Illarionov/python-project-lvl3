@@ -7,7 +7,7 @@
 ### Hexlet tests and linter status:
 ![Actions Status](https://github.com/Nikita-Illarionov/python-project-lvl3/workflows/hexlet-check/badge.svg)
 
-page-loader - утилита, которая скачивает страницу из сети и кладет ее в указанную директорию (по умолчанию в директорию запуска программы)
+page-loader - утилита, которая скачивает страницу из сети и кладет ее в указанную директорию (по умолчанию в директорию запуска программы).
 ~~~
 $ page-loader --output=/var/tmp https://hexlet.io/courses
 $ open /var/tmp/hexlet-io-courses.html
